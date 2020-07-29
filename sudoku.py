@@ -10,6 +10,7 @@ board = [
     [0,4,9,2,0,6,0,0,7]
 ]
 
+# Check if valid position
 def valid(board,num,pos):
     # Check row
     for i in range(len(board[0])):
@@ -38,6 +39,32 @@ def valid(board,num,pos):
 
     return True
 
+def solve(board):
+    # Get coords of empty spot
+    find = findEmpty(board)    
+
+    # Found solution
+    if not find:
+        return True
+    # If not found solution
+    else:
+        row, col = find
+
+    for i in range(1,10):
+        # //Insert into board
+        if valid(board, i, (row, col)):
+            board[row][col] = i
+
+            if (solve(board) is True):
+                return True
+
+            # Reset if fail
+            board[row][col] = 0
+
+    return False
+
+
+
 def printBoard(board):
     for i in range(len(board)):
         if i % 3 == 0 and i != 0:
@@ -56,7 +83,6 @@ def printBoard(board):
                 # Adds space between numbers
                 print(str(board[i][j]) + " ", end="")
 
-printBoard(board)
 
 # Find empty square
 def findEmpty(board):
@@ -65,3 +91,9 @@ def findEmpty(board):
             if board[i][j] == 0:
                 return (i, j) # row, column 
 
+    return None
+
+printBoard(board)
+solve(board)
+print("__________________")
+printBoard(board)
